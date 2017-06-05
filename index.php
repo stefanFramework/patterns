@@ -24,5 +24,15 @@
                 <a href="patterns/structural/decorator.php.php">Decorator</a>
             </li>
         </ul>
+        
+        <hr>
+        
+        <h2>Comportamiento</h2>
+        <ul>
+            <li>
+                <a href="patterns/behavior/strategy.php">Strategy</a>
+            </li>
+        </ul>
+        
     </body>
 </html>

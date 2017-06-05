@@ -7,22 +7,22 @@ interface iElement {
     public function write($message);
 }
 
-class Span implements iStyle {
+class Span implements iElement {
     
     public function write($message) {
-        echo "<span>" . $message . "</span>";
+        echo htmlentities("<span>" . $message . "</span>");
     }
 }
 
-class Div implements iStyle {
+class Div implements iElement {
     public function write($message) {
-        echo "<div>" . $message . "</div>";
+        echo htmlentities("<div>" . $message . "</div>");
     }
 }
 
-class Paragraph implements iStyle {
+class Paragraph implements iElement {
     public function write ($message) {
-        echo "<p>" . $message . "</p>";
+        echo htmlentities("<p>" . $message . "</p>");
     }
 }
 
@@ -33,7 +33,7 @@ class Paragraph implements iStyle {
 class HtmlGenerator {
     public $message;
     
-    public function generate(iStyle $mode) {
+    public function generate(iElement $mode) {
         $mode->write($this->message);
     }
 }
@@ -46,6 +46,9 @@ $html = new HtmlGenerator();
 $html->message = "Esto es una prueba";
 
 $html->generate(new Span());
-$html->generate(new Div());
-$html->generate(new Paragraph());
+echo "<hr>";
 
+$html->generate(new Div());
+echo "<hr>";
+
+$html->generate(new Paragraph());
