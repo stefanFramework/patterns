@@ -11,6 +11,9 @@
             <li>
                 <a href="patterns/creational/singleton.php">Singleton</a>
             </li>
+            <li>
+                <a href="patterns/creational/factory_method.php">Factory Method</a>
+            </li>
         </ul>
         
         <hr>
@@ -21,7 +24,10 @@
                 <a href="patterns/structural/composite.php">Composite</a>
             </li>
             <li>
-                <a href="patterns/structural/decorator.php.php">Decorator</a>
+                <a href="patterns/structural/decorator.php">Decorator</a>
+            </li>
+            <li>
+                <a href="patterns/structural/adapter.php">Adapter</a>
             </li>
         </ul>
         
@@ -31,6 +37,9 @@
         <ul>
             <li>
                 <a href="patterns/behavior/strategy.php">Strategy</a>
+            </li>
+            <li>
+                <a href="patterns/behavior/state.php">State</a>
             </li>
         </ul>
         
