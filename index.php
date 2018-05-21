@@ -41,6 +41,9 @@
             <li>
                 <a href="patterns/behavior/state.php">State</a>
             </li>
+            <li>
+                <a href="patterns/behavior/iterator.php">Iterator</a>
+            </li>
         </ul>
         
     </body>
