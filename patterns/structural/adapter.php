@@ -1,57 +1,85 @@
 <?php
 
-// Clases
-// =============================================================================
-class Facebook {
-    public function postToWall($msg) {
-        echo "Publicado en tu Fb: " . $msg . "<br>";
+interface iPayPal
+{
+    public function pay($amount);
+}
+
+interface iEGateway
+{
+    public function sendNotification();
+    public function makePayment($total);
+}
+
+class PayPalCash implements iPayPal
+{
+    public function pay($amount)
+    {
+        echo "Realizando pago a traves de PayPal por $" . $amount . "<hr>";
     }
 }
 
-class Twitter {
-    public function twit($content) {
-        echo "Twiteando: " .$content . "<br>";
+class EGatewayCash implements iEGateway {
+    public function makePayment($total)
+    {
+        echo "Realizando pago a traves de EGateway por $" . $total . "<br>";
+    }
+
+    public function sendNotification()
+    {
+        echo "Enviando notificacion a cliente<hr>";
     }
 }
 
-// Adapters
-// =============================================================================
-interface SocialMediaAdapter {
-    public function post($msg);
+// Adaptadores
+interface iEPaymentAdapter
+{
+    public function performPayment($amount);
 }
 
-class FacebookAdapter implements SocialMediaAdapter {
-    private $fb;
-    
-    public function __construct(Facebook $facebook) {
-        $this->fb = $facebook;
-    }
-    
-    public function post($message) {
-        $this->fb->postToWall($message);
-    }
-}
+class PayPalAdapter implements iEPaymentAdapter
+{
+    private $gateway;
 
-class TwitterAdapter implements SocialMediaAdapter {
-    private $twitter;
-    
-    public function __construct(Twitter $twitter) {
-        $this->twitter = $twitter;
+    public function __construct(iPayPal $paypalGateway)
+    {
+        $this->gateway = $paypalGateway;
     }
-    
-    public function post($msg) {
-        $this->twitter->twit($msg);
+
+    public function performPayment($amount)
+    {
+        $this->gateway->pay($amount);
     }
 }
 
-// Use
-// =============================================================================
+class EGatewayAdapter implements iEPaymentAdapter
+{
+    private $gateway;
 
-$facebook = new FacebookAdapter(new Facebook());
-$twitter = new TwitterAdapter(new Twitter());
+    public function __construct(iEGateway $eGatewayAdapter)
+    {
+        $this->gateway = $eGatewayAdapter;
+    }
 
-$facebook->post("Hoy comi Fideos");
-$twitter->post("Estoy enviando un Twit");
+    public function performPayment($amount)
+    {
+        $this->gateway->makePayment($amount);
+        $this->gateway->sendNotification();
+    }
+}
+
+class Client
+{
+    // ... Client Attributes
+
+    public function payPurchase($total, iEPaymentAdapter $gatewayAdapter)
+    {
+        $gatewayAdapter->performPayment($total);
+    }
+}
 
 
+$client = new Client();
+$client->payPurchase(100, new PayPalAdapter(new PayPalCash()));
 
+$client->payPurchase(200, new EGatewayAdapter(new EGatewayCash()));
