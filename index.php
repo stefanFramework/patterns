@@ -9,6 +9,9 @@
         <h2>Creacionales</h2>
         <ul>
             <li>
+                <a href="patterns/creational/builder.php">Builder</a>
+            </li>
+            <li>
                 <a href="patterns/creational/singleton.php">Singleton</a>
             </li>
             <li>

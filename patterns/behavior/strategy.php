@@ -1,54 +1,36 @@
 <?php
 
-/**
- * Strategy
- */
-interface iElement {
-    public function write($message);
+interface iStyle
+{
+    public function apply($text);
 }
 
-class Span implements iElement {
-    
-    public function write($message) {
-        echo htmlentities("<span>" . $message . "</span>");
+class Bold implements  iStyle
+{
+    public function apply($text)
+    {
+        echo "<b>" . $text . "</b>";
     }
 }
 
-class Div implements iElement {
-    public function write($message) {
-        echo htmlentities("<div>" . $message . "</div>");
+class Italics implements iStyle
+{
+    public function apply($text)
+    {
+        echo "<i>" . $text . "</i>";
     }
 }
 
-class Paragraph implements iElement {
-    public function write ($message) {
-        echo htmlentities("<p>" . $message . "</p>");
+class TextWriter
+{
+    public function write($text, iStyle $style)
+    {
+        $style->apply($text);
     }
 }
 
-/**
- * Client
- */ 
-
-class HtmlGenerator {
-    public $message;
-    
-    public function generate(iElement $mode) {
-        $mode->write($this->message);
-    }
-}
-
-/**
- * Use
- */
-
-$html = new HtmlGenerator();
-$html->message = "Esto es una prueba";
-
-$html->generate(new Span());
+// =====================================================================
+$writer = new TextWriter();
+$writer->write("Esto es un texto en Negrita", new Bold());
 echo "<hr>";
-
-$html->generate(new Div());
-echo "<hr>";
-
-$html->generate(new Paragraph());
+$writer->write("Esto es un texto en Cursiva", new Italics());

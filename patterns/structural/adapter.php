@@ -70,16 +70,24 @@ class EGatewayAdapter implements iEPaymentAdapter
 
 class Client
 {
-    // ... Client Attributes
+    /** @var iEPaymentAdapter */
+    private $gateway;
 
-    public function payPurchase($total, iEPaymentAdapter $gatewayAdapter)
+    public function setGateway(iEPaymentAdapter $gatewayAdapter)
     {
-        $gatewayAdapter->performPayment($total);
+        $this->gateway = $gatewayAdapter;
+    }
+
+    public function payPurchase($total)
+    {
+        $this->gateway->performPayment($total);
     }
 }
 
 
 $client = new Client();
-$client->payPurchase(100, new PayPalAdapter(new PayPalCash()));
+$client->setGateway(new PayPalAdapter(new PayPalCash()));
+$client->payPurchase(100);
 
-$client->payPurchase(200, new EGatewayAdapter(new EGatewayCash()));
+$client->setGateway(new EGatewayAdapter(new EGatewayCash()));
+$client->payPurchase(200);
