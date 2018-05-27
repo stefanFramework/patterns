@@ -1,5 +1,6 @@
 <?php
 
+// Command
 interface iRuleCommand
 {
     public function execute($value);
@@ -23,6 +24,7 @@ class IsNumericCommand implements iRuleCommand
 }
 
 
+// Invoker
 class Invoker
 {
     private $ruleCommand;
@@ -38,6 +40,7 @@ class Invoker
     }
 }
 
+// Receiver
 class Validator
 {
     /** @var Invoker */
@@ -55,6 +58,7 @@ class Validator
 }
 
 
+// Client
 $validator = new Validator();
 $validator->setRule(new RequiredCommand());
 
