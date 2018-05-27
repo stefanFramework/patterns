@@ -39,6 +39,9 @@
         <h2>Comportamiento</h2>
         <ul>
             <li>
+                <a href="patterns/behavior/command.php">Command</a>
+            </li>
+            <li>
                 <a href="patterns/behavior/strategy.php">Strategy</a>
             </li>
             <li>
