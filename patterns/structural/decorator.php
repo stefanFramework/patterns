@@ -1,61 +1,81 @@
 <?php
 
-interface iCoffee {
-
+interface iCoffee
+{
     public function getBaseCost();
 }
 
-class Coffee implements iCoffee {
+class Coffee implements iCoffee
+{
 
-    protected $_baseCost = 0;
+    protected $baseCost = 0;
 
-    public function getBaseCost() {
-        return $this->_baseCost;
+    public function getBaseCost()
+    {
+        return $this->baseCost;
     }
 
 }
 
-class BlackCoffee extends Coffee {
+class BlackCoffee extends Coffee
+{
 
-    public function __construct() {
-        $this->_baseCost = 5;
+    public function __construct()
+    {
+        $this->baseCost = 5;
     }
 
 }
 
-abstract class CoffeeDecorator implements iCoffee {
+class Capuccino extends Coffee
+{
+    public function __construct()
+    {
+        $this->baseCost = 15;
+    }
+}
 
-    protected $_coffee;
+abstract class CoffeeDecorator implements iCoffee
+{
 
-    public function __construct(iCoffee $Coffee) {
-        $this->_coffee = $Coffee;
+    protected $coffee;
+
+    public function __construct(iCoffee $Coffee)
+    {
+        $this->coffee = $Coffee;
     }
 
 }
 
-class WithCream extends CoffeeDecorator {
+class Cream extends CoffeeDecorator
+{
 
-    public function getBaseCost() {
-        return $this->_coffee->getBaseCost() + 1.5;
+    public function getBaseCost()
+    {
+        return $this->coffee->getBaseCost() + 1.5;
     }
 
 }
 
-class WithMilk extends CoffeeDecorator {
+class Milk extends CoffeeDecorator
+{
 
-    public function getBaseCost() {
-        return $this->_coffee->getBaseCost() + 4;
+    public function getBaseCost()
+    {
+        return $this->coffee->getBaseCost() + 4;
     }
 
 }
 
-class WithChocolate extends CoffeeDecorator {
+class Chocolate extends CoffeeDecorator
+{
 
-    public function getBaseCost() {
-        return $this->_coffee->getBaseCost() + 5;
+    public function getBaseCost()
+    {
+        return $this->coffee->getBaseCost() + 5;
     }
 
 }
 
-$coffee = new WithChocolate(new WithMilk(new WithCream(new BlackCoffee())));
+$coffee = new Chocolate(new Milk(new Cream(new BlackCoffee())));
 echo 'El precio del cafe es: $' . $coffee->getBaseCost();
