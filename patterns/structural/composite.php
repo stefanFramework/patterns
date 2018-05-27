@@ -30,6 +30,32 @@ class Folder extends FsElement {
     }
 }
 
+class Client
+{
+    /** @var Folder  */
+    private $myDocumentsFolder;
+
+    public function __construct()
+    {
+        $this->myDocumentsFolder = new Folder();
+    }
+
+    public function addFileToMyDocuments(File $newFile)
+    {
+        $this->myDocumentsFolder->addElement($newFile);
+    }
+
+    public function getMyDocumentsSize()
+    {
+        echo "La Carpeta Mis Documentos pesa " . $this->myDocumentsFolder->getSize() . " bytes<hr>";
+    }
+
+    public function getFileSize(File $file)
+    {
+        echo "El archivo pesa " . $file->getSize() . " bytes<hr>";
+    }
+
+}
 
 $file1 = new File();
 $file1->content = "Esto es un archivo txt";
@@ -40,10 +66,10 @@ $file2->content = "Esto es otro archivo txt, distinto al anterior";
 $file3 = new File();
 $file3->content = "Esto es un archivo XLS";
 
-$myDocuments = new Folder();
-$myDocuments->addElement($file1);
-$myDocuments->addElement($file2);
-$myDocuments->addElement($file3);
+$systemUser = new Client();
+$systemUser->addFileToMyDocuments($file1);
+$systemUser->addFileToMyDocuments($file2);
+$systemUser->addFileToMyDocuments($file3);
 
-echo "El archivo1 pesa " . $file1->getSize() . " bytes<hr>";
-echo "La Carpeta Mis Documentos pesa " . $myDocuments->getSize() . " bytes<hr>";
+$systemUser->getFileSize($file1);
+$systemUser->getMyDocumentsSize();

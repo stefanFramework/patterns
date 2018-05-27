@@ -88,21 +88,32 @@ class AmericanBurgerBuilder extends BurgerBuilder
 
 class Chef
 {
-    public function makeBurger(BurgerBuilder $builder)
-    {
-        $builder->createBurger();
-        $builder->prepareBun();
-        $builder->cookPatty();
-        $builder->putToppings();
+    /** @var BurgerBuilder */
+    private $builder;
 
-        return $builder->getBurger();
+    public function setBuilder (BurgerBuilder $builder)
+    {
+        $this->builder = $builder;
+    }
+
+    public function makeBurger()
+    {
+        $this->builder->createBurger();
+        $this->builder->prepareBun();
+        $this->builder->cookPatty();
+        $this->builder->putToppings();
+
+        return $this->builder->getBurger();
     }
 }
 
 
 $chef = new Chef();
-$vegieBurger = $chef->makeBurger(new VeggieBurgerBuilder());
-echo $vegieBurger;
+
+$chef->setBuilder(new VeggieBurgerBuilder());
+echo $chef->makeBurger();
+
 echo "<hr>";
-$americanBurger = $chef->makeBurger(new AmericanBurgerBuilder());
-echo $americanBurger;
+
+$chef->setBuilder(new AmericanBurgerBuilder());
+echo $chef->makeBurger();;
