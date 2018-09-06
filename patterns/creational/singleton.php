@@ -6,7 +6,7 @@ class Singleton {
     
     private $counter;
     
-    public function __construct() {
+    private function __construct() {
         $this->counter = 0;
     }
     

@@ -1,69 +1,151 @@
 <?php
 
-// Command
-interface iRuleCommand
+/**
+ * Reciever
+ */
+interface ElectronicDevice
 {
-    public function execute($value);
+    public function on();
+    public function off();
+    public function volumeUp();
+    public function volumeDown();
 }
 
-class RequiredCommand implements iRuleCommand
+class Television implements ElectronicDevice
 {
-    public function execute($value)
+    private $volume;
+
+    public function __construct()
     {
-        return !empty($value);
+        $this->volume = 0;
+    }
+
+    public function on()
+    {
+        echo "Encendiendo la Tele";
+    }
+
+    public function off()
+    {
+        echo "Apagando la Tele";
+    }
+
+    public function volumeUp()
+    {
+        if ($this->volume < 100) {
+            $this->volume ++;
+        }
+
+        echo "Volumen: " . $this->volume;
+
+    }
+
+    public function volumeDown()
+    {
+        if ($this->volume > 0) {
+            $this->volume--;
+        }
+
+        echo "Volumen: " . $this->volume;
     }
 }
 
-class IsNumericCommand implements iRuleCommand
+/**
+ * Comando
+ */
+interface Command
 {
-    public function execute($value)
-    {
-        $regex = "/^[0-9]+$/i";
-        return preg_match($regex, $value);
-    }
+    public function execute();
 }
 
-
-// Invoker
-class Invoker
+class TurnTvOn implements Command
 {
-    private $ruleCommand;
+    private $electronicDevice;
 
-    public function __construct(iRuleCommand $ruleCommand)
+    public function __construct(ElectronicDevice $electronicDevice)
     {
-        $this->ruleCommand = $ruleCommand;
+        $this->electronicDevice = $electronicDevice;
     }
 
-    public function run($context)
+    public function execute()
     {
-        return $this->ruleCommand->execute($context);
+        $this->electronicDevice->on();
     }
 }
 
-// Receiver
-class Validator
+class TurnTvOff implements Command
 {
-    /** @var Invoker */
-    private $invoker;
+    private $electronicDevice;
 
-    public function setRule(iRuleCommand $ruleCommand)
+    public function __construct(ElectronicDevice $electronicDevice)
     {
-        $this->invoker = new Invoker($ruleCommand);
+        $this->electronicDevice = $electronicDevice;
     }
 
-    public function isValid($value)
+    public function execute()
     {
-        return $this->invoker->run($value);
+        $this->electronicDevice->off();
     }
 }
 
+class TurnVolumeUp implements Command
+{
+    private $electronicDevice;
 
-// Client
-$validator = new Validator();
-$validator->setRule(new RequiredCommand());
+    public function __construct(ElectronicDevice $electronicDevice)
+    {
+        $this->electronicDevice = $electronicDevice;
+    }
 
-if ($validator->isValid("")) {
-    echo "Paso la prueba";
-} else {
-    echo "No paso la prueba";
+    public function execute()
+    {
+        $this->electronicDevice->volumeUp();
+    }
 }
+
+class TurnVolumeDown implements Command
+{
+    private $electronicDevice;
+
+    public function __construct(ElectronicDevice $electronicDevice)
+    {
+        $this->electronicDevice = $electronicDevice;
+    }
+
+    public function execute()
+    {
+        $this->electronicDevice->volumeDown();
+    }
+}
+
+/**
+ * Invoker
+ * Este invoker no sabe que device o comando esta siendo usado,
+ * simplemente ejecuta un comando
+ *
+ */
+class DeviceButton {
+    private $command;
+
+    public function __construct(Command $command)
+    {
+        $this->command = $command;
+    }
+
+    public function press()
+    {
+        $this->command->execute();
+
+    }
+}
+
+// Main
+$tv = new Television();
+
+$turnTVOn = new TurnTvOn($tv);
+$turnTVOff = new TurnTvOff($tv);
+$turnVolumeUp = new TurnVolumeUp($tv);
+$turnVolumeDown = new TurnVolumeDown($tv);
+
+$button = new DeviceButton($turnTVOn);
+$button->press();

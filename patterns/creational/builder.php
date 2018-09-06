@@ -116,4 +116,4 @@ echo $chef->makeBurger();
 echo "<hr>";
 
 $chef->setBuilder(new AmericanBurgerBuilder());
-echo $chef->makeBurger();;
+echo $chef->makeBurger();
